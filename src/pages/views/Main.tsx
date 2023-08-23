@@ -112,9 +112,9 @@ const parsePrizeIntoResult = (prize: string[]) => {
 
 export default function MainView() {
   const [inputValue, setInputValue] = React.useState<Record<string, number>>({
-    'pack-A': 1,
-    'pack-B': 2,
-    'pack-C': 3,
+    'pack-A': 3,
+    'pack-B': 5,
+    'pack-C': 4,
   });
   const total = Object.values(inputValue).reduce((acc, cur) => acc + cur, 0);
 

@@ -1,0 +1,616 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* #region  /**=========== Primary Color =========== */
+  /* !STARTERCONF Customize these variable, copy and paste from /styles/colors.css for list of colors */
+  --tw-color-primary-50: 240 249 255;
+  --tw-color-primary-100: 224 242 254;
+  --tw-color-primary-200: 186 230 253;
+  --tw-color-primary-300: 125 211 252;
+  --tw-color-primary-400: 56 189 248;
+  --tw-color-primary-500: 14 165 233;
+  --tw-color-primary-600: 2 132 199;
+  --tw-color-primary-700: 3 105 161;
+  --tw-color-primary-800: 7 89 133;
+  --tw-color-primary-900: 12 74 110;
+  --color-primary-50: rgb(var(--tw-color-primary-50)); /* #f0f9ff */
+  --color-primary-100: rgb(var(--tw-color-primary-100)); /* #e0f2fe */
+  --color-primary-200: rgb(var(--tw-color-primary-200)); /* #bae6fd */
+  --color-primary-300: rgb(var(--tw-color-primary-300)); /* #7dd3fc */
+  --color-primary-400: rgb(var(--tw-color-primary-400)); /* #38bdf8 */
+  --color-primary-500: rgb(var(--tw-color-primary-500)); /* #0ea5e9 */
+  --color-primary-600: rgb(var(--tw-color-primary-600)); /* #0284c7 */
+  --color-primary-700: rgb(var(--tw-color-primary-700)); /* #0369a1 */
+  --color-primary-800: rgb(var(--tw-color-primary-800)); /* #075985 */
+  --color-primary-900: rgb(var(--tw-color-primary-900)); /* #0c4a6e */
+  /* #endregion  /**======== Primary Color =========== */
+}
+
+@layer base {
+  /* inter var - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/inter-var-latin.woff2');
+  }
+
+  .cursor-newtab {
+    cursor: url('/images/new-tab.png') 10 10, pointer;
+  }
+
+  /* #region  /**=========== Typography =========== */
+  .h0 {
+    @apply font-primary text-3xl font-bold md:text-5xl;
+  }
+
+  h1,
+  .h1 {
+    @apply font-primary text-2xl font-bold md:text-4xl;
+  }
+
+  h2,
+  .h2 {
+    @apply font-primary text-xl font-bold md:text-3xl;
+  }
+
+  h3,
+  .h3 {
+    @apply font-primary text-lg font-bold md:text-2xl;
+  }
+
+  h4,
+  .h4 {
+    @apply font-primary text-base font-bold md:text-lg;
+  }
+
+  body,
+  .p {
+    @apply font-primary text-sm md:text-base;
+  }
+  /* #endregion  /**======== Typography =========== */
+
+  .layout {
+    /* 1100px */
+    max-width: 64rem;
+    @apply mx-auto w-11/12;
+  }
+
+  .bg-dark a.custom-link {
+    @apply border-gray-200 hover:border-gray-200/0;
+  }
+
+  /* Class to adjust with sticky footer */
+  .min-h-main {
+    @apply min-h-[calc(100vh-56px)];
+  }
+
+  .dot-flashing-white {
+    position: relative;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: white;
+    color: white;
+    animation: dot-flashing-white 1s infinite linear alternate;
+    animation-delay: 0.5s;
+  }
+
+  .dot-flashing-white::before,
+  .dot-flashing-white::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+  }
+  .dot-flashing-white::before {
+    left: -15px;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: white;
+    color: white;
+    animation: dot-flashing-white 1s infinite alternate;
+    animation-delay: 0s;
+  }
+  .dot-flashing-white::after {
+    left: 15px;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: white;
+    color: white;
+    animation: dot-flashing-white 1s infinite alternate;
+    animation-delay: 1s;
+  }
+
+  @keyframes dot-flashing-white {
+    0% {
+      background-color: white;
+    }
+    50%,
+    100% {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .dot-flashing-black {
+    position: relative;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: black;
+    color: black;
+    animation: dot-flashing-black 1s infinite linear alternate;
+    animation-delay: 0.5s;
+  }
+  .dot-flashing-black::before,
+  .dot-flashing-black::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+  }
+  .dot-flashing-black::before {
+    left: -15px;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: black;
+    color: black;
+    animation: dot-flashing-black 1s infinite alternate;
+    animation-delay: 0s;
+  }
+  .dot-flashing-black::after {
+    left: 15px;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: black;
+    color: black;
+    animation: dot-flashing-black 1s infinite alternate;
+    animation-delay: 1s;
+  }
+
+  @keyframes dot-flashing-black {
+    0% {
+      background-color: black;
+    }
+    50%,
+    100% {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+  .animated-underline {
+    background-image: linear-gradient(#33333300, #33333300),
+      linear-gradient(
+        to right,
+        var(--color-primary-400),
+        var(--color-primary-500)
+      );
+    background-size: 100% 2px, 0 2px;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .animated-underline {
+      transition: 0.3s ease;
+      transition-property: background-size, color, background-color,
+        border-color;
+    }
+  }
+  .animated-underline:hover,
+  .animated-underline:focus-visible {
+    background-size: 0 2px, 100% 2px;
+  }
+}
+
+.bg-rekt {
+  background-color: #f1f1ec;
+}
+
+@font-face {
+  font-family: 'JimmyCollins';
+
+  src: url('/fonts/JimmyCollins.otf');
+}
+
+@font-face {
+  font-family: 'Share Tech Mono';
+  src: url('/fonts/ShareTechMono-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Apercu';
+  src: url('/fonts/Apercu-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Apercu';
+  src: url('/fonts/Apercu-Light.otf');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Apercu';
+  src: url('/fonts/Apercu-Bold.otf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Bold.ttf');
+  font-weight: bold;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-brown-light {
+  font-family: 'Brown Light', sans-serif;
+  letter-spacing: 0;
+}
+
+.font-jimmy {
+  font-family: 'JimmyCollins', sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.font-apercu {
+  font-family: 'Apercu', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.dot-elastic {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #3d8fff;
+  color: #3d8fff;
+  animation: dot-elastic 1s infinite linear;
+}
+.dot-elastic::before,
+.dot-elastic::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-elastic::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #3d8fff;
+  color: #3d8fff;
+  animation: dot-elastic-before 1s infinite linear;
+}
+
+.dot-elastic::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #3d8fff;
+  color: #3d8fff;
+  animation: dot-elastic-after 1s infinite linear;
+}
+
+@keyframes dot-elastic-before {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1.5);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 1.5);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic-after {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.dot-elastic-white {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  animation: dot-elastic 1s infinite linear;
+}
+.dot-elastic-white::before,
+.dot-elastic-white::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-elastic-white::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  animation: dot-elastic-before 1s infinite linear;
+}
+
+.dot-elastic-white::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+  animation: dot-elastic-after 1s infinite linear;
+}
+
+.dot-elastic-black {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: black;
+  color: black;
+  animation: dot-elastic 1s infinite linear;
+}
+.dot-elastic-black::before,
+.dot-elastic-black::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-elastic-black::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: black;
+  color: black;
+  animation: dot-elastic-before 1s infinite linear;
+}
+
+.dot-elastic-black::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: black;
+  color: black;
+  animation: dot-elastic-after 1s infinite linear;
+}
+
+/**
+ * ==============================================
+ * Dot Flashing
+ * ==============================================
+ */
+.dot-flashing {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+.dot-flashing::before,
+.dot-flashing::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-flashing::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+.dot-flashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: #9880ff;
+  }
+  50%,
+  100% {
+    background-color: rgba(152, 128, 255, 0.2);
+  }
+}
+
+.dot-flashing-main {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #caff47;
+  color: #caff47;
+  animation: dot-flashing-main 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+.dot-flashing-main::before,
+.dot-flashing-main::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-flashing-main::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #caff47;
+  color: #caff47;
+  animation: dot-flashing-main 1s infinite alternate;
+  animation-delay: 0s;
+}
+.dot-flashing-main::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #caff47;
+  color: #caff47;
+  animation: dot-flashing-main 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing-main {
+  0% {
+    background-color: #caff47;
+  }
+  50%,
+  100% {
+    background-color: rgba(202, 255, 71, 0.2);
+  }
+}
+
+.dot-flashing-green {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #98d107;
+  color: #98d107;
+  animation: dot-flashing-green 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+.dot-flashing-green::before,
+.dot-flashing-green::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-flashing-green::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #98d107;
+  color: #98d107;
+  animation: dot-flashing-green 1s infinite alternate;
+  animation-delay: 0s;
+}
+.dot-flashing-green::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #98d107;
+  color: #98d107;
+  animation: dot-flashing-green 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing-green {
+  0% {
+    background-color: #98d107;
+  }
+  50%,
+  100% {
+    background-color: rgba(152, 209, 7, 0.2);
+  }
+}
+
+.staking-number {
+  font-family: 'Apercu', sans-serif;
+  font-weight: 700;
+}
+
+.staking-number-stage-1 {
+  color: #caff47;
+  font-family: 'Apercu', sans-serif;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .nav-text {
+    font-size: calc(16px + (100vw - 320px) * 0.025);
+  }
+}
+
+.black-button {
+  background: #1d1d1f;
+  border: #1d1d1f 1px solid;
+}

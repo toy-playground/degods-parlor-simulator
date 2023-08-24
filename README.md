@@ -1,3 +1,3 @@
-# NFT Creator App
+# DeGods Parlor Point Simulator
 
-for xRath's use.
+for ttu's use.

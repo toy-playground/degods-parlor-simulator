@@ -409,7 +409,7 @@ export default function MainView() {
                               <DustSvg />
                             </div>
                           </div>
-                          <Disclosure.Panel className='text-gray-500'>
+                          <Disclosure.Panel className='mt-[-8px] text-xs text-gray-500'>
                             {currentResult[pack].map((prize, index) => {
                               return currentResult[pack].length > 50 &&
                                 prize === '0 DUST' ? null : (

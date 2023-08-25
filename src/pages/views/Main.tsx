@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Disclosure } from '@headlessui/react';
 import Image from 'next/image';
 import * as React from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 
 import { Input } from '@/components/Input';
 import Layout from '@/components/layout/Layout';
@@ -56,7 +57,18 @@ const PRIZE_MAP: Record<string, Record<string, number>> = {
   },
 };
 
+const defaultHistory = {
+  'pack-A': [0, 0, 0],
+  'pack-B': [0, 0, 0],
+  'pack-C': [0, 0, 0],
+  total: 0,
+};
+
 export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [history] = useLocalStorageState('parlor-simulator-history', {
+    defaultValue: defaultHistory,
+  });
   return (
     <Layout>
       <Seo />
@@ -74,6 +86,13 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
                 <DiamondSvg className='h-[32px] w-[32px] ' />
                 Parlor Simulator
               </UnstyledLink>
+              <div
+                className='flex cursor-pointer items-center transition-all hover:text-gray-400 sm:mx-[34px]'
+                onClick={() => setIsOpen(true)}
+              >
+                Hist <DiamondSvg />
+                ry
+              </div>
             </div>
           </header>
           <div className={viewWrapper}>{children}</div>
@@ -86,10 +105,95 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
             </UnstyledLink>
           </footer>
         </section>
+        <Transition show={isOpen} as={React.Fragment}>
+          <Dialog onClose={() => setIsOpen(false)} className='z-100 relative'>
+            <Transition.Child
+              as={React.Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0'
+              enterTo='opacity-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100'
+              leaveTo='opacity-0'
+            >
+              <div className='fixed inset-0 bg-black/50' aria-hidden='true' />
+            </Transition.Child>
+            <Transition.Child
+              as={React.Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0 scale-95'
+              enterTo='opacity-100 scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 scale-100'
+              leaveTo='opacity-0 scale-95'
+            >
+              <div className='fixed inset-0 flex items-center justify-center p-4'>
+                <Dialog.Panel className='rounded-8 flex max-h-[90%] w-full max-w-[600px] flex-col items-center overflow-y-auto rounded bg-black p-[32px] text-white md:p-[64px]'>
+                  <div className=' text-center text-lg font-bold'>
+                    Simulator History
+                  </div>
+                  {history.total <= 0 ? (
+                    <div className='mt-6 text-center text-gray-600'>
+                      No History
+                    </div>
+                  ) : (
+                    <div className='flex w-full flex-col divide-y divide-gray-600'>
+                      {['pack-A', 'pack-B', 'pack-C'].map((pack) => {
+                        const [dustPrizeCnt, otherPrizeCnt, total] =
+                          history[pack as 'pack-A' | 'pack-B' | 'pack-C'];
+                        return (
+                          <div className='w-full' key={pack}>
+                            <div className='flex w-full items-center justify-between pt-4'>
+                              <div>{pack}</div>
+                              <div className='flex items-center text-sm font-bold'>
+                                Total Open {total ?? 0} Packs
+                              </div>
+                            </div>
+                            <div className='flex w-full items-center justify-between py-2 text-xs'>
+                              <div>$DUST Prizes</div>
+                              <div className='flex items-center text-orange-400'>
+                                {dustPrizeCnt?.toFixed(2) ?? 0} <DustSvg />
+                              </div>
+                            </div>
+                            <div className='flex w-full items-center justify-between pb-2 text-xs'>
+                              <div>$DUST Expected Value</div>
+                              <div className='flex items-center font-bold text-red-500 '>
+                                {((total ?? 0) * dustEV[pack]).toFixed(2)}{' '}
+                                <DustSvg />
+                              </div>
+                            </div>
+                            <div className='flex w-full items-center justify-between pb-4 text-xs'>
+                              <div>Other Prizes Cnt</div>
+                              <div className='flex items-center text-orange-400'>
+                                {otherPrizeCnt ?? 0}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Dialog.Panel>
+              </div>
+            </Transition.Child>
+          </Dialog>
+        </Transition>
       </main>
     </Layout>
   );
 };
+
+const dustEV = Object.entries(PRIZE_MAP).reduce((acc, current) => {
+  const [key, prize] = current;
+  acc[key] = Object.entries(prize)
+    .map(([key, value]) => {
+      return key.includes('DUST')
+        ? (value / 10000) * Number(key.split(' ')[0])
+        : 0;
+    })
+    .reduce((acc, cur) => acc + cur, 0);
+  return acc;
+}, {} as Record<string, number>);
 
 const generatePool = (pack: string) => {
   const prize = PRIZE_MAP[pack] as Record<string, number>;
@@ -111,6 +215,13 @@ const parsePrizeIntoResult = (prize: string[]) => {
 };
 
 export default function MainView() {
+  const [history, setHistory] = useLocalStorageState(
+    'parlor-simulator-history',
+    {
+      defaultValue: defaultHistory,
+    }
+  );
+
   const [inputValue, setInputValue] = React.useState<Record<string, number>>({
     'pack-A': 3,
     'pack-B': 5,
@@ -123,7 +234,7 @@ export default function MainView() {
     Record<string, string[]>
   >({});
 
-  const simulate = () => {
+  const simulate = async () => {
     const result: Record<string, string[]> = {
       'pack-A': [],
       'pack-B': [],
@@ -136,22 +247,18 @@ export default function MainView() {
         result[pack].push(pool[index]);
       }
     });
-
+    const tmpHistory = history ?? defaultHistory;
+    tmpHistory.total += total;
+    ['pack-A', 'pack-B', 'pack-C'].forEach((pack) => {
+      const [dustPrizeCnt, otherPrizeCnt] = parsePrizeIntoResult(result[pack]);
+      tmpHistory[pack as 'pack-A' | 'pack-B' | 'pack-C'][0] += dustPrizeCnt;
+      tmpHistory[pack as 'pack-A' | 'pack-B' | 'pack-C'][1] += otherPrizeCnt;
+      tmpHistory[pack as 'pack-A' | 'pack-B' | 'pack-C'][2] += inputValue[pack];
+    });
+    setHistory(tmpHistory);
     setCurrentResult(result);
     setIsOpen(true);
   };
-
-  const dustEV = Object.entries(PRIZE_MAP).reduce((acc, current) => {
-    const [key, prize] = current;
-    acc[key] = Object.entries(prize)
-      .map(([key, value]) => {
-        return key.includes('DUST')
-          ? (value / 10000) * Number(key.split(' ')[0])
-          : 0;
-      })
-      .reduce((acc, cur) => acc + cur, 0);
-    return acc;
-  }, {} as Record<string, number>);
 
   return (
     <BaseLayout>

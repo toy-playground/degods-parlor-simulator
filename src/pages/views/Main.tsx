@@ -141,6 +141,18 @@ export default function MainView() {
     setIsOpen(true);
   };
 
+  const dustEV = Object.entries(PRIZE_MAP).reduce((acc, current) => {
+    const [key, prize] = current;
+    acc[key] = Object.entries(prize)
+      .map(([key, value]) => {
+        return key.includes('DUST')
+          ? (value / 10000) * Number(key.split(' ')[0])
+          : 0;
+      })
+      .reduce((acc, cur) => acc + cur, 0);
+    return acc;
+  }, {} as Record<string, number>);
+
   return (
     <BaseLayout>
       <div className='flex w-full select-none flex-col items-center gap-5 overflow-hidden 2xl:gap-10'>
@@ -169,6 +181,10 @@ export default function MainView() {
                           </div>
                         );
                       })}
+                      <div className='flex w-full items-center justify-between py-[10px] font-bold text-orange-400'>
+                        <div>$DUST EV</div>
+                        <div>{dustEV[pack].toFixed(3)}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -269,7 +285,7 @@ export default function MainView() {
                     return (
                       <div key={pack} className='w-full text-white'>
                         <Disclosure>
-                          <Disclosure.Button className='flex w-full items-center justify-between py-4'>
+                          <Disclosure.Button className='flex w-full items-center justify-between pt-4'>
                             <div>{pack}</div>
                             <div className='flex items-center'>
                               {dust}
@@ -277,6 +293,15 @@ export default function MainView() {
                               {other ? ' + ' + other + ' * ??? PRIZE' : ''}
                             </div>
                           </Disclosure.Button>
+                          <div className='flex w-full items-center justify-between py-4 text-xs text-orange-400'>
+                            <div>$DUST Expected Value</div>
+                            <div className='flex items-center'>
+                              {(
+                                currentResult[pack].length * dustEV[pack]
+                              ).toFixed(3)}{' '}
+                              <DustSvg />
+                            </div>
+                          </div>
                           <Disclosure.Panel className='text-gray-500'>
                             {currentResult[pack].map((prize, index) => {
                               return currentResult[pack].length > 50 &&

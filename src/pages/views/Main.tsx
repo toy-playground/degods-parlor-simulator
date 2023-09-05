@@ -32,28 +32,28 @@ export const Divider = ({ className }: { className?: string }) => {
 
 const PRIZE_MAP: Record<string, Record<string, number>> = {
   'pack-A': {
-    '0 DUST': 7380,
-    '3.3 DUST': 2000,
+    '0 DUST': 8190,
+    '3.3 DUST': 1100,
     '5 DUST': 300,
-    '10 DUST': 200,
+    '10 DUST': 300,
     '33 DUST': 100,
-    '??? PRIZE': 20,
+    '??? PRIZE': 10,
   },
   'pack-B': {
-    '0 DUST': 8030,
-    '3.3 DUST': 1300,
-    '5 DUST': 400,
-    '10 DUST': 200,
+    '0 DUST': 8340,
+    '3.3 DUST': 1200,
+    '5 DUST': 300,
+    '10 DUST': 100,
     '100 DUST': 50,
-    '??? PRIZE': 20,
+    '??? PRIZE': 10,
   },
   'pack-C': {
-    '0 DUST': 8755,
-    '3.3 DUST': 900,
-    '5 DUST': 200,
+    '0 DUST': 8770,
+    '3.3 DUST': 1000,
+    '5 DUST': 100,
     '10 DUST': 100,
-    '333 DUST': 25,
-    '??? PRIZE': 20,
+    '333 DUST': 20,
+    '??? PRIZE': 10,
   },
 };
 
